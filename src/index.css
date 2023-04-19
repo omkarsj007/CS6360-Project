@@ -11,3 +11,139 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --primary-color: #5089C6;
+  --secondary-color: #FFAA4C;
+  --tertiary-color: #fff8ea;
+}
+
+.primary-color {
+  color: var(--primary-color);
+}
+
+.secondary-color {
+  color: var(--secondary-color);
+}
+
+.bg-primary-color {
+  background-color: var(--primary-color);
+}
+
+.bg-secondary-color {
+  background-color: var(--secondary-color);
+}
+
+.bg-tertiary-color {
+  background-color: var(--tertiary-color);
+}
+
+.bg-gray-color {
+  background-color: #888888;
+}
+
+.font {
+  font-family: 'Playfair Display', serif;
+}
+
+.navbg {
+  background-color: rgba(0, 33, 66, 0.814);
+  backdrop-filter: blur(10px);
+  border-radius: 5px;
+}
+
+.profile-page{
+  border-radius: 5px;
+}
+.navbar-nav .nav-item .nav-link .navbar-brand{
+  color: white !important;
+}
+
+textarea {
+  width: 300px;
+  height: 150px;
+}
+
+/* .navbar-nav .nav-item .nav-link:hover {
+  color: var(--secondary-color) !important;
+  cursor: pointer;
+} */
+
+.cover {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.grow {
+  transition: all .1s ease-in-out;
+}
+
+.grow:hover {
+  transform: scale(1.05);
+  box-shadow: -5px -5px 8px rgba(255, 255, 255, 0.8),
+          5px 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-content {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  z-index: 20;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+}
+
+.profile-content {
+  background: var(--tertiary-color);
+  border-radius: 30px;
+  box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.8),
+      5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+.profile-content-primary {
+  background: var(--primary-color);
+  border-radius: 30px;
+  box-shadow: -5px -5px 10px rgba(255, 255, 255, 0.8),
+      5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-img {
+  border-radius: 50%;
+}
+
+.shadows {
+  box-shadow: -5px -5px 8px rgba(255, 255, 255, 0.8),
+      5px 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.darken {
+  filter: brightness(75%);
+}
+
+.card-list {
+  position: relative;
+  text-align: left;
+}
+
+.centered {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+}
+.right {
+  position: absolute;
+  bottom: 16px;
+  right: 128px;
+}
+
+
+.text-shadow {
+  text-shadow: 3px 3px 3px #000000
+}
+
+.select-menu {
+  position: relative;
+  z-index: 99;
+}
+
+
