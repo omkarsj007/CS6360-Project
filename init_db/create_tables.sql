@@ -40,7 +40,7 @@ CREATE TABLE Sellers (
 );
 
 CREATE TABLE Bank (
-    Bank_id INT PRIMARY KEY,
+    Bank_id INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(255) NOT NULL,
     Phone_no CHAR(10) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE Customer(
 );
 
 CREATE TABLE Transactions (
-    T_ID INT NOT NULL,
+    T_ID INT NOT NULL AUTO_INCREMENT,
     Bank_ID INT NOT NULL,
     Account_id INT NOT NULL,
     Approval_Status ENUM('Approved', 'Pending', 'Rejected') NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE Product_Stock (
 );
 
 CREATE TABLE Orders (
-    Order_ID INT NOT NULL,
+    Order_ID INT NOT NULL AUTO_INCREMENT,
     Cust_ID CHAR(10) NOT NULL,
     Timestamp TIMESTAMP NOT NULL,
     Status ENUM(
