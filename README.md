@@ -1,3 +1,13 @@
+## Deployment
+
+### Initialize Database State
+In the mysql shell:
+```
+source init_db/create_tables.sql
+source init_db/populate_tables.sql
+source init_db/create_views.sql
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
