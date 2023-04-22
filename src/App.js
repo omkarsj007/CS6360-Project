@@ -6,6 +6,8 @@ import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Search from './pages/Search';
 import Login from './pages/Login';
+import Admin from './pages/Admin';
+import RejectedTransactions from './pages/RejectedTransactions';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/rejectedTransactions" element={<RejectedTransactions />} />
       </Routes>
     </Router>
   );

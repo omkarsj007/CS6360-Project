@@ -58,6 +58,17 @@ app.get("/getAllTodos", (req, res, next) => {
   });
  });
 
+ app.get("/getRejected", (req, res, next) => {
+  conn.query("select * from vw_CustomersWIthRejectedTransactions", function (err, data, fields) {
+    if(err) return next(new AppError(err))
+    res.status(200).json({
+      status: "success",
+      length: data?.length,
+      data: data,
+    });
+  });
+ });
+
  app.post("/getQuery", (req, res, next) => {
   const { query } = req.body;
   const parsedQuery = query.split('\n').join(' ');
