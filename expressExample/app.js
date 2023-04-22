@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./models");
 const app = express();
+const bodyParser = require("body-parser")
 
 var corsOptions = {
   origin: "http://localhost:3000"
@@ -21,6 +22,7 @@ conn.connect();
 
 
 app.use(cors(corsOptions));
+app.use(bodyParser.json())
  
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -68,6 +70,109 @@ app.get("/getAllTodos", (req, res, next) => {
     });
   });
  });
+
+app.post("/purchaseItems", async (req, res, next) => {
+  let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+  console.log(req.body)
+
+  // TODO: set customerId on login
+  let customerId = 6;
+  let productId = req.body.productId;
+  let sellerId = req.body.sellerId;
+  let count = req.body.count;
+
+  // check that the customer's order does not violate product_stock
+  conn.query(
+    "SELECT Price, Stock FROM `Product_Stock` WHERE `Product_ID` = ? AND `Seller_ID` = ?",
+    [productId, sellerId],
+    function(err, data) {
+      if (err) throw err;
+      if (data.length === 0) {
+        console.log("Sending 400")
+        return res.status(400).send("Product or Seller not found.");
+      }
+      let productStock = data[0]["Stock"];
+      let productPrice = data[0]["Price"];
+      if (count > productStock) {
+        return res.status(400).send("Transaction failed.");
+      }
+
+      // get bank id and bank account number from customers
+      var bankId;
+      var bankAccNum;
+      conn.query(
+        "SELECT Bank_ID, Bank_AccNum FROM Customer WHERE Cust_id = ?",
+        [customerId],
+        function(err, data) {
+          if (err) throw err;
+          bankId = data[0]["Bank_ID"];
+          bankAccNum = data[0]["Bank_AccNum"];
+
+          let cost = count * productPrice;
+          // Create a new transaction
+          conn.query(
+            "INSERT INTO `Transactions` SET ?",
+            {
+              BANK_ID: bankId,
+              Account_id: bankAccNum,
+              Approval_Status: 'Approved',
+              Timestamp: now,
+              Amount: cost,
+            },
+            function(err, data) {
+              if (err) throw err;
+              let transactionId = data.insertId;
+              console.log("Transaction ID: " + transactionId);
+
+              // Create a new order
+              conn.query(
+                "INSERT INTO `Orders` SET ?",
+                {
+                  Cust_ID: customerId,
+                  Timestamp: now,
+                  Status: "Confirmed",
+                  Verified_By: 1,
+                  T_ID: transactionId,
+                },
+                function(err, data) {
+                  if (err) throw err;
+                  let orderId = data.insertId;
+                  console.log("Order ID: " + orderId);
+
+                  // add a row in order_summary
+                  conn.query(
+                    "INSERT INTO `Order_Summary` SET ?",
+                    {
+                      Order_ID: orderId,
+                      Product_ID: productId,
+                      Seller_ID: sellerId,
+                      Count: count,
+                    },
+                    function (err, data) {
+                      if (err) throw err;
+
+                      // update product_stock table
+                      let newStock = productStock - count;
+                      conn.query(
+                        "UPDATE Product_Stock SET Stock = ? WHERE Product_ID = ? AND Seller_ID = ?",
+                        [newStock, productId, sellerId],
+                        function (err, data) {
+                          if (err) throw err;
+                          res.status(200).send("Transaction completed succesfully.")
+                        }
+                      )
+                    }
+                  )
+                }
+              )
+            }
+          )
+        }
+      )
+    }
+  )
+})
 
  app.post("/getQuery", (req, res, next) => {
   const { query } = req.body;

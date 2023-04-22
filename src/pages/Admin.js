@@ -11,7 +11,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Table, Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 
-
+import PurchaseProduct from "./PurchaseProduct";
 
 const Admin = () => {
     
@@ -20,6 +20,7 @@ const Admin = () => {
     {
         navigate('/rejectedTransactions')
     }
+
     return (
         <Container className="bg-tertiary-color profile-page">
             <br></br>
@@ -38,6 +39,8 @@ const Admin = () => {
                 </Button>
                 </Col>
             </Row>
+
+            <PurchaseProduct />
         </Container>
         
       );
