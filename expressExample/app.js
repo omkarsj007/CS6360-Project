@@ -95,7 +95,7 @@ app.post("/purchaseItems", async (req, res, next) => {
       let productStock = data[0]["Stock"];
       let productPrice = data[0]["Price"];
       if (count > productStock) {
-        return res.status(400).send("Transaction failed.");
+        return res.status(400).send("Not enough stock to fulfill order.");
       }
 
       // get bank id and bank account number from customers

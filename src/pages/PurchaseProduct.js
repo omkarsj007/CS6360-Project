@@ -12,7 +12,9 @@ function PurchaseProduct() {
     const [count, setCount] = useState([]);
     const [output, setOutput] = useState([]);
 
-    const handlePurchaseProduct = () => {
+    const handlePurchaseProduct = (event) => {
+        event.preventDefault();
+        
         let params = {
             productId: productId,
             sellerId: sellerId,
@@ -25,15 +27,15 @@ function PurchaseProduct() {
             },
             body: JSON.stringify(params)
         })
-            .then((res) => res.text())
-            .then(data => {
-                console.log(data);
-                setOutput(data);
-            })
-            .catch(err => {
-                console.error(err);
-                setOutput("Error: " + err.message);
-            })
+        .then((res) => res.text())
+        .then(data => {
+            console.log(data);
+            setOutput(data);
+        })
+        .catch(err => {
+            console.error(err);
+            setOutput("Error: " + err.message);
+        })
     }
 
     var outputHtml;
@@ -49,13 +51,13 @@ function PurchaseProduct() {
                         Place Order
                     </Button>
                     <br></br>
-                    <label for="productId">Product ID: </label>
+                    <label htmlFor="productId">Product ID: </label>
                     <input type="text" id="productId" value={productId} onChange={e => setProductId(e.target.value)} required/>
                     <br></br>
-                    <label for="sellerId">Seller ID: </label>
+                    <label htmlFor="sellerId">Seller ID: </label>
                     <input type="text" id="sellerId" value={sellerId} onChange={e => setSellerId(e.target.value)} required/>
                     <br></br>
-                    <label for="count">Quantity: </label>
+                    <label htmlFor="count">Quantity: </label>
                     <input type="number" id="count" value={count} onChange={e => setCount(e.target.value)} required/>
                 </form>
 
