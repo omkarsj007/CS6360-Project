@@ -100,8 +100,22 @@ app.post("/UpdateProductPrice", (req, res, next) => {
  });
 
 
- app.get("/getRejected", (req, res, next) => {
-  conn.query("select * from vw_CustomersWIthRejectedTransactions", function (err, data, fields) {
+ app.get("/getTransactions", (req, res, next) => {
+  const status = req.query.status;
+  var table;
+  if(status === 'rejected')
+  {
+    table = "vw_CustomersWithRejectedTransactions"
+  }
+  else if(status === 'pending')
+  {
+    table = "vw_CustomersWithPendingTransactions"
+  }
+  else
+  {
+    table = "vw_CustomersWithApprovedTransactions"
+  }
+  conn.query(`select * from ${table}`, function (err, data, fields) {
     if(err) return next(new AppError(err))
     res.status(200).json({
       status: "success",
@@ -110,6 +124,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
     });
   });
  });
+
 
 app.post("/purchaseItems", async (req, res, next) => {
   let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
