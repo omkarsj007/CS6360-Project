@@ -61,11 +61,13 @@ app.get("/getAllTodos", (req, res, next) => {
  });
 
 app.get("/UpdateProductPrice", (req, res, next) => {
+  let admin_seller = req.body.admin_seller;
   let productId = req.body.productId;
   let sellerId = req.body.sellerId;
   let Product_Price = req.body.Product_Price;
-  
-  conn.query("Update `Product_Stock` set price = ? WHERE `Product_ID` = ? AND `Seller_ID` = ?",
+  if (admin_seller == "Seller")
+      {
+  conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? AND `Seller_ID` = ? ",
              [Product_Price,productId, sellerId],
              function (err, data, fields) {
     if(err) return next(new AppError(err))
@@ -75,6 +77,25 @@ app.get("/UpdateProductPrice", (req, res, next) => {
       data: data,
     });
   });
+}
+   else if (admin_seller == "Admin")
+      {
+  conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? ",
+             [Product_Price,productId],
+             function (err, data, fields) {
+    if(err) return next(new AppError(err))
+    res.status(200).json({
+      status: "success",
+      length: data?.length,
+      data: data,
+    });
+  });
+}
+  else 
+  {
+     return res.status(400).send("Please Specify whether you are Admin or Seller");
+  }
+  
  });
 
 
