@@ -11,6 +11,7 @@ function Updata_Product_Price() {
     const [sellerId, setSellerId] = useState([]);
     const [admin_seller, setadmin_seller] = useState([]);
     const [Product_Price, setProduct_Price] = useState([]);
+    const [output, setOutput] = useState([]);
 
     const handlePurchaseProduct = (event) => {
         event.preventDefault();
@@ -31,25 +32,25 @@ function Updata_Product_Price() {
         .then((res) => res.text())
         .then(data => {
             console.log(data);
-            // setOutput(data);
+            setOutput(data);
         })
         .catch(err => {
             console.error(err);
-            // setOutput("Error: " + err.message);
+            setOutput("Error: " + err.message);
         })
     }
 
     var outputHtml;
-    // if (output) {
-    //     outputHtml = <p>{output}</p>
-    // }
+    if (output) {
+        outputHtml = <p>{output}</p>
+    }
 
     return (
         <Row className="justify-content-md-center mt-5">
             <Col xs lg="6" className="d-grid gap-2">
                 <form onSubmit={handlePurchaseProduct}>
                     <Button variant="primary" size="lg" type="submit">
-                        Place Order
+                        Update Price
                     </Button>
                     <br></br>
                     <label htmlFor="productId">Product ID: </label>
