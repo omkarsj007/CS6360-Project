@@ -58,10 +58,10 @@ function Updata_Product_Price() {
                     <label htmlFor="sellerId">Seller ID: </label>
                     <input type="text" id="sellerId" value={sellerId} onChange={e => setSellerId(e.target.value)} required/>
                     <br></br>
-                    <label htmlFor="admin_seller">Quantity: </label>
+                    <label htmlFor="admin_seller">Set Admin Seller: </label>
                     <input type="text" id="admin_seller" value={admin_seller} onChange={e => setadmin_seller(e.target.value)} required/>
                     <br></br>
-                    <label htmlFor="Product_Price">Quantity: </label>
+                    <label htmlFor="Product_Price">Product Price: </label>
                     <input type="number" id="Product_Price" value={Product_Price} onChange={e => setProduct_Price(e.target.value)} required/>
                 </form>
 
