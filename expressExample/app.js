@@ -60,6 +60,24 @@ app.get("/getAllTodos", (req, res, next) => {
   });
  });
 
+app.get("/UpdateProductPrice", (req, res, next) => {
+  let productId = req.body.productId;
+  let sellerId = req.body.sellerId;
+  let Product_Price = req.body.Product_Price;
+  
+  conn.query("Update `Product_Stock` set price = ? WHERE `Product_ID` = ? AND `Seller_ID` = ?",
+             [Product_Price,productId, sellerId],
+             function (err, data, fields) {
+    if(err) return next(new AppError(err))
+    res.status(200).json({
+      status: "success",
+      length: data?.length,
+      data: data,
+    });
+  });
+ });
+
+
  app.get("/getRejected", (req, res, next) => {
   conn.query("select * from vw_CustomersWIthRejectedTransactions", function (err, data, fields) {
     if(err) return next(new AppError(err))
