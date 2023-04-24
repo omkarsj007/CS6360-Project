@@ -66,8 +66,21 @@ app.post("/UpdateProductPrice", (req, res, next) => {
   let productId = req.body.productId;
   let sellerId = req.body.sellerId;
   let Product_Price = req.body.Product_Price;
+  if (Product_Price <= 0)
+  {
+  return res.status(400).send("Please enter valid price");
+  } 
   if (admin_seller == "Seller")
       {
+         conn.query(
+    "SELECT Price, Stock FROM `Product_Stock` WHERE `Product_ID` = ? AND `Seller_ID` = ?",
+    [productId, sellerId],
+    function(err, data) {
+      if (err) throw err;
+      if (data.length === 0) {
+        console.log("Sending 400")
+        return res.status(400).send("Product or Seller not found.");
+      }
   conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? AND `Seller_ID` = ? ",
              [Product_Price,productId, sellerId],
              function (err, data, fields) {
@@ -82,6 +95,15 @@ app.post("/UpdateProductPrice", (req, res, next) => {
 }
    else if (admin_seller == "Admin")
       {
+        conn.query(
+    "SELECT Price, Stock FROM `Product_Stock` WHERE `Product_ID` = ? ",
+    [productId],
+    function(err, data) {
+      if (err) throw err;
+      if (data.length === 0) {
+        console.log("Sending 400")
+        return res.status(400).send("Product not found.");
+      }
   conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? ",
              [Product_Price,productId],
              function (err, data, fields) {
