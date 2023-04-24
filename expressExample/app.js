@@ -60,7 +60,8 @@ app.get("/getAllTodos", (req, res, next) => {
   });
  });
 
-app.get("/UpdateProductPrice", (req, res, next) => {
+app.post("/UpdateProductPrice", (req, res, next) => {
+  
   let admin_seller = req.body.admin_seller;
   let productId = req.body.productId;
   let sellerId = req.body.sellerId;
