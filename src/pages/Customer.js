@@ -13,17 +13,12 @@ import Col from 'react-bootstrap/Col';
 
 import PurchaseProduct from "./PurchaseProduct";
 
-const Admin = () => {
+const Customer = () => {
     
     const navigate = useNavigate();
-    function handleOnRejectedClick()
+    function handlePurchaseClick()
     {
-        navigate('/rejectedTransactions')
-    }
-
-    function handleOnPriceClick()
-    {
-        navigate('/updateProductprice')
+        navigate('/purchaseProduct')
     }
 
     return (
@@ -31,25 +26,24 @@ const Admin = () => {
             <br></br>
             <Row className="justify-content-md-center">
                 <Col xs lg="6" className="text-center">
-                    <h2> Admin Actions</h2>
+                    <h2> Customer Actions</h2>
                 </Col>
             </Row>
             <Row className="justify-content-md-center mt-5">
-                <Col xs lg="6" className="d-grid gap-2" onClick={handleOnRejectedClick}>
+                <Col xs lg="6" className="d-grid gap-2" onClick={handlePurchaseClick}>
                 <Button variant="primary" size="lg">
-                    Customer Transactions Status
+                    Purchase Product
                 </Button>
-                <Button variant="primary" size="lg" onClick={handleOnPriceClick}>
-                     Update Product Price
+                <Button variant="primary" size="lg">
+                    Action 2
                 </Button>
                 </Col>
             </Row>
 
-            <PurchaseProduct />
         </Container>
         
       );
   };
   
-  export default Admin;
+  export default Customer;
   
