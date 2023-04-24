@@ -58,7 +58,7 @@ app.get("/getAllTodos", (req, res, next) => {
       data: data,
     });
   });
- });
+});
 
  app.get("/getRejected", (req, res, next) => {
   conn.query("select * from vw_CustomersWIthRejectedTransactions", function (err, data, fields) {
@@ -70,6 +70,19 @@ app.get("/getAllTodos", (req, res, next) => {
     });
   });
  });
+
+app.get("/getOrderHistory", (req, res, next) => {
+  const custId = req.body.custId;
+  const query = "SELECT * FROM vw_CustomerOrderHistory WHERE Cust_id=?";
+  conn.query(query, [custId], function (err, data, fields) {
+    if(err) return next(new AppError(err))
+    res.status(200).json({
+      status: "success",
+      length: data?.length,
+      data: data,
+    });
+  });
+});
 
 app.post("/purchaseItems", async (req, res, next) => {
   let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
