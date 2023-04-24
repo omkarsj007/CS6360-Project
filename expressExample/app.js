@@ -88,15 +88,15 @@ app.post("/UpdateProductPrice", (req, res, next) => {
              [Product_Price,productId, sellerId],
              function (err, data, fields) {
     if(err) return next(new AppError(err))
-    res.status(200).json({
-      status: "success",
-      length: data?.length,
-      data: data,
-    });
+    // res.status(200).json({
+    //   status: "success",
+    //   length: data?.length,
+    //   data: data,
+    // });
   });
        if(count == 0)
        {
-        return res.status(400).send("Price Updated");
+        return res.status(200).send("Price Updated");
        }
         elseif(count == 1)
         {
@@ -121,15 +121,15 @@ app.post("/UpdateProductPrice", (req, res, next) => {
              [Product_Price,productId],
              function (err, data, fields) {
     if(err) return next(new AppError(err))
-    res.status(200).json({
-      status: "success",
-      length: data?.length,
-      data: data,
-    });
+    // res.status(200).json({
+    //   status: "success",
+    //   length: data?.length,
+    //   data: data,
+    // });
   });
         if(count == 0)
         {
-        return res.status(400).send("Price Updated");
+        return res.status(200).send("Price Updated");
         }
         if(count == 1)
         {
