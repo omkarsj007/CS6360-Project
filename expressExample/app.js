@@ -79,9 +79,9 @@ app.post("/UpdateProductPrice", (req, res, next) => {
     function(err, data) {
       if (err) throw err;
       if (data.length === 0) {
-        console.log("Sending 400")
+        // console.log("Sending 400")
         count = count + 1;
-        return res.status(400).send("Product or Seller not found.");
+        // return res.status(400).send("Product or Seller not found.");
       };
     });
   conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? AND `Seller_ID` = ? ",
@@ -112,8 +112,8 @@ app.post("/UpdateProductPrice", (req, res, next) => {
     function(err, data) {
       if (err) throw err;
       if (data.length === 0) {
-        console.log("Sending 400")
-        return res.status(400).send("Product not found.");
+        // console.log("Sending 400")
+        // return res.status(400).send("Product not found.");
         count = count + 1;
       };
     });
