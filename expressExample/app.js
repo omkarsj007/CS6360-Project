@@ -78,6 +78,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
       data: data,
     });
   });
+        return res.status(400).send("Price Updated");
 }
    else if (admin_seller == "Admin")
       {
@@ -91,6 +92,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
       data: data,
     });
   });
+        return res.status(400).send("Price Updated");
 }
   else 
   {
