@@ -72,6 +72,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
   } 
   if (admin_seller == "Seller")
       {
+        let count = 0;
          conn.query(
     "SELECT Price, Stock FROM `Product_Stock` WHERE `Product_ID` = ? AND `Seller_ID` = ?",
     [productId, sellerId],
@@ -79,6 +80,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
       if (err) throw err;
       if (data.length === 0) {
         console.log("Sending 400")
+        count = count + 1;
         return res.status(400).send("Product or Seller not found.");
       };
     });
@@ -92,10 +94,18 @@ app.post("/UpdateProductPrice", (req, res, next) => {
       data: data,
     });
   });
+       if(count == 0)
+       {
         return res.status(400).send("Price Updated");
+       }
+        elseif(count == 1)
+        {
+           return res.status(400).send("Product or Seller not found.");
+        }
 }
    else if (admin_seller == "Admin")
       {
+        let count = 0;
         conn.query(
     "SELECT Price, Stock FROM `Product_Stock` WHERE `Product_ID` = ? ",
     [productId],
@@ -104,6 +114,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
       if (data.length === 0) {
         console.log("Sending 400")
         return res.status(400).send("Product not found.");
+        count = count + 1;
       };
     });
   conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? ",
@@ -116,7 +127,14 @@ app.post("/UpdateProductPrice", (req, res, next) => {
       data: data,
     });
   });
+        if(count == 0)
+        {
         return res.status(400).send("Price Updated");
+        }
+        if(count == 1)
+        {
+        return res.status(400).send("Product not found.");
+        }
 }
   else 
   {
