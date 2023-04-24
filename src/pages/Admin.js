@@ -35,8 +35,8 @@ const Admin = () => {
                 </Col>
             </Row>
             <Row className="justify-content-md-center mt-5">
-                <Col xs lg="6" className="d-grid gap-2" onClick={handleOnRejectedClick}>
-                <Button variant="primary" size="lg">
+                <Col xs lg="6" className="d-grid gap-2">
+                <Button variant="primary" size="lg" onClick={handleOnRejectedClick}>
                     Customer Transactions Status
                 </Button>
                 <Button variant="primary" size="lg" onClick={handleOnPriceClick}>
@@ -45,7 +45,7 @@ const Admin = () => {
                 </Col>
             </Row>
 
-            <PurchaseProduct />
+            
         </Container>
         
       );
