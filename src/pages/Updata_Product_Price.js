@@ -31,18 +31,18 @@ function Updata_Product_Price() {
         .then((res) => res.text())
         .then(data => {
             console.log(data);
-            setOutput(data);
+            // setOutput(data);
         })
         .catch(err => {
             console.error(err);
-            setOutput("Error: " + err.message);
+            // setOutput("Error: " + err.message);
         })
     }
 
     var outputHtml;
-    if (output) {
-        outputHtml = <p>{output}</p>
-    }
+    // if (output) {
+    //     outputHtml = <p>{output}</p>
+    // }
 
     return (
         <Row className="justify-content-md-center mt-5">

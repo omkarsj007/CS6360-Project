@@ -8,6 +8,7 @@ import Search from './pages/Search';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import RejectedTransactions from './pages/RejectedTransactions';
+import Updata_Product_Price from './pages/Updata_Product_Price';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/rejectedTransactions" element={<RejectedTransactions />} />
+        <Route path="/updateProductprice" element={<Updata_Product_Price />} />
       </Routes>
     </Router>
   );
