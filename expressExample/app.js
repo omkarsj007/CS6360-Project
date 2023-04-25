@@ -225,7 +225,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
   });
  });
 
-app.get("/getOrderHistory", (req, res, next) => {
+app.post("/getOrderHistory", (req, res, next) => {
   const custId = req.body.custId;
   const query = "SELECT * FROM vw_CustomerOrderHistory WHERE Cust_id=?";
   conn.query(query, [custId], function (err, data, fields) {
