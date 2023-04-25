@@ -25,6 +25,25 @@ const Admin = () => {
     {
         navigate('/updateProductprice')
     }
+    
+    const handleLogout = async () => {
+        localStorage.removeItem("user");
+        navigate('/sample')
+      }
+
+    if(localStorage.getItem("user") == null)
+    {
+        return(
+            <Container className="bg-tertiary-color profile-page">
+            <br></br>
+            <Row className="justify-content-md-center">
+                <Col xs lg="6" className="text-center">
+                    <h2> Please Log in</h2>
+                </Col>
+            </Row>        
+        </Container>
+        )
+    }
 
     return (
         <Container className="bg-tertiary-color profile-page">
@@ -41,6 +60,9 @@ const Admin = () => {
                 </Button>
                 <Button variant="primary" size="lg" onClick={handleOnPriceClick}>
                      Update Product Price
+                </Button>
+                <Button variant="primary" size="lg" onClick={handleLogout}>
+                     Logout
                 </Button>
                 </Col>
             </Row>

@@ -11,6 +11,8 @@ import RejectedTransactions from './pages/RejectedTransactions';
 import Updata_Product_Price from './pages/Updata_Product_Price';
 import PurchaseProduct from './pages/PurchaseProduct';
 import Customer from './pages/Customer';
+import Sample from './pages/Sample';
+import OrderHistory from './pages/OrderHistory';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route path="/rejectedTransactions" element={<RejectedTransactions />} />
         <Route path="/updateProductprice" element={<Updata_Product_Price />} />
         <Route path="/purchaseProduct" element={<PurchaseProduct />} />
+        <Route path="/sample" element={<Sample />} />
+        <Route path="/orderHistory" element={<OrderHistory />} />
       </Routes>
     </Router>
   );

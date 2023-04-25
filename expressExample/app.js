@@ -60,6 +60,62 @@ app.get("/getAllTodos", (req, res, next) => {
   });
 });
 
+
+app.post("/sample", async (req, res, next) => {
+  
+  let username = req.body.username;
+  let password = req.body.password;
+  let userType = req.body.userType;
+  if(userType == "admin")
+  {
+    conn.query(`select * from Admin where username="${username}" AND password="${password}"`, function (err, results) {
+      if (err) throw err;
+      if (results.length === 1) {
+        return res.status(200).json({
+          status: "success",
+          length: results?.length,
+          data: results,
+        });
+      } else {
+        return res.status(404).json({ error: "Invalid Credentials" });
+      }
+    });
+  }
+  if(userType == "customer")
+  {
+    conn.query(`select * from Customer where username="${username}" AND password="${password}"`, function (err, results) {
+      if (err) throw err;
+      if (results.length === 1) {
+        return res.status(200).json({
+          status: "success",
+          length: results?.length,
+          data: results,
+        });
+      } else {
+        return res.status(404).json({ error: "Invalid Credentials" });
+      }
+    });
+  }
+  if(userType == "seller")
+  {
+    conn.query(`select * from Seller where username="${username}" AND password="${password}"`, function (err, results) {
+      if (err) throw err;
+      if (results.length === 1) {
+        return res.status(200).json({
+          status: "success",
+          length: data?.length,
+          data: data,
+        });
+      } else {
+        return res.status(404).json({ error: "Invalid Credentials" });
+      }
+    });
+  }
+
+  // return res.status(404).json({ error: "Invalid Credentials" });
+
+});
+
 app.post("/UpdateProductPrice", (req, res, next) => {
   
   let admin_seller = req.body.admin_seller;

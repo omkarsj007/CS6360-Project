@@ -21,6 +21,25 @@ const Customer = () => {
         navigate('/purchaseProduct')
     }
 
+    const handleLogout = async () => {
+        localStorage.removeItem("user");
+        navigate('/sample')
+      }
+
+    if(localStorage.getItem("user") == null)
+    {
+        return(
+            <Container className="bg-tertiary-color profile-page">
+            <br></br>
+            <Row className="justify-content-md-center">
+                <Col xs lg="6" className="text-center">
+                    <h2> Please Log in</h2>
+                </Col>
+            </Row>        
+        </Container>
+        )
+    }
+
     return (
         <Container className="bg-tertiary-color profile-page">
             <br></br>
@@ -30,12 +49,12 @@ const Customer = () => {
                 </Col>
             </Row>
             <Row className="justify-content-md-center mt-5">
-                <Col xs lg="6" className="d-grid gap-2" onClick={handlePurchaseClick}>
-                <Button variant="primary" size="lg">
+                <Col xs lg="6" className="d-grid gap-2" >
+                <Button variant="primary" size="lg" onClick={handlePurchaseClick}>
                     Purchase Product
                 </Button>
-                <Button variant="primary" size="lg">
-                    Action 2
+                <Button variant="primary" size="lg" onClick={handleLogout}>
+                    Log out
                 </Button>
                 </Col>
             </Row>
