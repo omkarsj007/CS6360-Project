@@ -3,12 +3,15 @@ import Row from "react-bootstrap/Row";
 import { Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 
+import "../components/OrderHistoryTable"
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css"
+import OrderHistoryTable from "../components/OrderHistoryTable";
 
 function OrderHistory() {
     const [custId, setCustId] = useState([]);
-    const [output, setOutput] = useState([]);
+    const [output, setOutput] = useState();
 
     const handleGetOrderHistory = (event) => {
         event.preventDefault();
@@ -27,18 +30,12 @@ function OrderHistory() {
         .then((res) => res.text())
         .then(data => {
             console.log(data);
-            setOutput(data);
+            setOutput(JSON.parse(data));
         })
         .catch(err => {
             console.error(err);
             setOutput("Error: " + err.message);
         })
-    }
-
-    let outputHtml;
-
-    if (output) {
-        outputHtml = <p>{output}</p>
     }
 
     return (
@@ -52,8 +49,7 @@ function OrderHistory() {
                     <label htmlFor="custId">Customer ID: </label>
                     <input type="text" id="custId" value={custId} onChange={e => setCustId(e.target.value)} required/>
                 </form>
-
-                {outputHtml}
+                {output && <OrderHistoryTable orderHistoryRes={output}/>}
             </Col>
         </Row>
     );
