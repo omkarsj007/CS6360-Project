@@ -5,11 +5,13 @@ import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 // import UserCard from "./components/UserCard";
 import UserCard from "../components/UserCard";
+import "../components/OrderHistoryTable"
 import "../index.css"
 
 import { useNavigate, Link } from "react-router-dom";
 import { Table, Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
+import OrderHistoryTable from "../components/OrderHistoryTable";
 
 const Customer = () => {
   let [orderHistory, setOrderHistory] = useState()
@@ -41,7 +43,7 @@ const Customer = () => {
       .then((res) => res.text())
       .then(data => {
         console.log(data);
-        setOrderHistory(data);
+        setOrderHistory(JSON.parse(data));
       })
       .catch(err => {
         console.error(err);
@@ -60,12 +62,6 @@ const Customer = () => {
         </Row>
       </Container>
     )
-  }
-
-  let outputHtml;
-
-  if (orderHistory) {
-    outputHtml = <p>{orderHistory}</p>
   }
 
   return (
@@ -91,16 +87,10 @@ const Customer = () => {
       </Row>
       <Row className="justify-content-md-center mt-5">
         <Col xs lg="6" className="d-grid gap-2" >
-          {orderHistory &&
-            <>
-              <h3>Order History:</h3>
-              {outputHtml}
-            </>
-          }
+          {orderHistory && <OrderHistoryTable orderHistoryRes={orderHistory}/>}
         </Col>
       </Row>
     </Container>
-
   );
 };
 
