@@ -6,16 +6,19 @@ import Col from 'react-bootstrap/Col';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css"
 
+import CurrentStock from "./CurrentStock";
+
 function PurchaseProduct() {
     const [productId, setProductId] = useState([]);
     const [sellerId, setSellerId] = useState([]);
     const [count, setCount] = useState([]);
-    const [output, setOutput] = useState([]);
+    const [output, setOutput] = useState(null);
 
     const handlePurchaseProduct = (event) => {
         event.preventDefault();
         
         let params = {
+            customerId: localStorage.getItem("cust_id"),
             productId: productId,
             sellerId: sellerId,
             count: count,
@@ -45,8 +48,10 @@ function PurchaseProduct() {
 
     return (
         <Row className="justify-content-md-center mt-5">
+            <CurrentStock />
             <Col xs lg="6" className="d-grid gap-2">
                 <form onSubmit={handlePurchaseProduct}>
+                    <br></br>
                     <Button variant="primary" size="lg" type="submit">
                         Place Order
                     </Button>

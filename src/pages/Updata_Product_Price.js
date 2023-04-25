@@ -11,6 +11,7 @@ function Updata_Product_Price() {
     const [sellerId, setSellerId] = useState([]);
     const [admin_seller, setadmin_seller] = useState([]);
     const [Product_Price, setProduct_Price] = useState([]);
+    const [output, setOutput] = useState([]);
 
     const handlePurchaseProduct = (event) => {
         event.preventDefault();
@@ -49,7 +50,7 @@ function Updata_Product_Price() {
             <Col xs lg="6" className="d-grid gap-2">
                 <form onSubmit={handlePurchaseProduct}>
                     <Button variant="primary" size="lg" type="submit">
-                        Place Order
+                        Update Price
                     </Button>
                     <br></br>
                     <label htmlFor="productId">Product ID: </label>

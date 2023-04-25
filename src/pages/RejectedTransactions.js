@@ -8,7 +8,7 @@ import UserCard from "../components/UserCard";
 import "../index.css"
 
 import { useNavigate, Link } from "react-router-dom";
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, ButtonGroup } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 
 function RejectionsTable(props) {
@@ -24,11 +24,11 @@ function RejectionsTable(props) {
   return (
     <div className="text-center">
         <br></br>
-        <h2>Rejected Transactions</h2>
+        
         <br></br>
         <Container>
             <Row className="justify-content-md-center">
-                <Col xs lg="6">
+                <Col xs lg="7">
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -36,7 +36,7 @@ function RejectionsTable(props) {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone_no</th>
-                        <th>Rejected Transactions</th>
+                        <th>Count</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,7 +46,7 @@ function RejectionsTable(props) {
                             <td>{item.name}</td>
                             <td>{item.email}</td>
                             <td>{item.phone_no}</td>
-                            <td>{item.Rejected_tran}</td>
+                            <td>{item.count}</td>
                         </tr>
                         ))}
                     </tbody>
@@ -64,10 +64,14 @@ function RejectionsTable(props) {
 const RejectedTransactions = () => {
     // const [profile, setProfile] = useState({});
     
-    const [users, setUsers] = useState([]);
+    const [status, setStatus] = useState('rejected');
     const [cleanData, setCleanData] = useState([]);
+
+    function handleFilterChange(option) {
+        setStatus(option);
+    }
     useEffect(() => {
-        fetch("http://localhost:8080/getRejected")
+        fetch(`http://localhost:8080/getTransactions?status=${status}`)
         .then((res) => res.json())
         .then((data) => {
             console.log(data.data)
@@ -77,18 +81,28 @@ const RejectedTransactions = () => {
                     name: item.Name,
                     email: item.Email,
                     phone_no: item.Phone_no,
-                    Rejected_tran: item.Rejected_Transactions
+                    count: item.Count
                 };
               });
               console.log(cData)
           setCleanData(cData);
         })
         .catch(console.log);
-    }, []);
+    }, [status]);
   
     return (
         <Container className="bg-tertiary-color profile-page" style={{ height: "100%" }}>
-            <RejectionsTable data={cleanData} />
+            <div className="text-center">
+            <br></br>
+            <h2>Filter Transactions</h2>
+            <br></br>
+            <ButtonGroup>
+                <Button variant={status === 'rejected' ? 'primary' : 'secondary'} onClick={() => handleFilterChange('rejected')}>Rejected</Button>
+                <Button variant={status === 'pending' ? 'primary' : 'secondary'} onClick={() => handleFilterChange('pending')}>Pending</Button>
+                <Button variant={status === 'approved' ? 'primary' : 'secondary'} onClick={() => handleFilterChange('approved')}>Approved</Button>
+            </ButtonGroup>
+        </div>
+            <RejectionsTable data={cleanData} status={status}/>
         </Container>
         
         

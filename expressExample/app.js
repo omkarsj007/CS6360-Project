@@ -97,7 +97,63 @@ app.get("/getAllTodos", (req, res, next) => {
       data: data,
     });
   });
- });
+});
+
+
+app.post("/sample", async (req, res, next) => {
+  
+  let username = req.body.username;
+  let password = req.body.password;
+  let userType = req.body.userType;
+  if(userType == "admin")
+  {
+    conn.query(`select * from Admin where username="${username}" AND password="${password}"`, function (err, results) {
+      if (err) throw err;
+      if (results.length === 1) {
+        return res.status(200).json({
+          status: "success",
+          length: results?.length,
+          data: results,
+        });
+      } else {
+        return res.status(404).json({ error: "Invalid Credentials" });
+      }
+    });
+  }
+  if(userType == "customer")
+  {
+    conn.query(`select * from Customer where username="${username}" AND password="${password}"`, function (err, results) {
+      if (err) throw err;
+      if (results.length === 1) {
+        return res.status(200).json({
+          status: "success",
+          length: results?.length,
+          data: results,
+        });
+      } else {
+        return res.status(404).json({ error: "Invalid Credentials" });
+      }
+    });
+  }
+  if(userType == "seller")
+  {
+    conn.query(`select * from Sellers where username="${username}" AND password="${password}"`, function (err, results) {
+      if (err) throw err;
+      if (results.length === 1) {
+        return res.status(200).json({
+          status: "success",
+          length: data?.length,
+          data: data,
+        });
+      } else {
+        return res.status(404).json({ error: "Invalid Credentials" });
+      }
+    });
+  }
+
+  // return res.status(404).json({ error: "Invalid Credentials" });
+
+});
 
 app.post("/UpdateProductPrice", (req, res, next) => {
   
@@ -105,31 +161,75 @@ app.post("/UpdateProductPrice", (req, res, next) => {
   let productId = req.body.productId;
   let sellerId = req.body.sellerId;
   let Product_Price = req.body.Product_Price;
+  if (Product_Price <= 0)
+  {
+  return res.status(400).send("Please enter valid price");
+  } 
   if (admin_seller == "Seller")
       {
+        let count = 0;
+         conn.query(
+    "SELECT Price, Stock FROM `Product_Stock` WHERE `Product_ID` = ? AND `Seller_ID` = ?",
+    [productId, sellerId],
+    function(err, data) {
+      if (err) throw err;
+      if (data.length === 0) {
+        // console.log("Sending 400")
+        count = count + 1;
+        // return res.status(400).send("Product or Seller not found.");
+      };
+    });
   conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? AND `Seller_ID` = ? ",
              [Product_Price,productId, sellerId],
              function (err, data, fields) {
     if(err) return next(new AppError(err))
-    res.status(200).json({
-      status: "success",
-      length: data?.length,
-      data: data,
-    });
+    // res.status(200).json({
+    //   status: "success",
+    //   length: data?.length,
+    //   data: data,
+    // });
   });
+       if(count == 0)
+       {
+        return res.status(200).send("Price Updated");
+       }
+        elseif(count == 1)
+        {
+           return res.status(400).send("Product or Seller not found.");
+        }
 }
    else if (admin_seller == "Admin")
       {
+        let count = 0;
+        conn.query(
+    "SELECT Price, Stock FROM `Product_Stock` WHERE `Product_ID` = ? ",
+    [productId],
+    function(err, data) {
+      if (err) throw err;
+      if (data.length === 0) {
+        // console.log("Sending 400")
+        // return res.status(400).send("Product not found.");
+        count = count + 1;
+      };
+    });
   conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? ",
              [Product_Price,productId],
              function (err, data, fields) {
     if(err) return next(new AppError(err))
-    res.status(200).json({
-      status: "success",
-      length: data?.length,
-      data: data,
-    });
+    // res.status(200).json({
+    //   status: "success",
+    //   length: data?.length,
+    //   data: data,
+    // });
   });
+        if(count == 0)
+        {
+        return res.status(200).send("Price Updated");
+        }
+        if(count == 1)
+        {
+        return res.status(400).send("Product not found.");
+        }
 }
   else 
   {
@@ -139,8 +239,22 @@ app.post("/UpdateProductPrice", (req, res, next) => {
  });
 
 
- app.get("/getRejected", (req, res, next) => {
-  conn.query("select * from vw_CustomersWIthRejectedTransactions", function (err, data, fields) {
+ app.get("/getTransactions", (req, res, next) => {
+  const status = req.query.status;
+  var table;
+  if(status === 'rejected')
+  {
+    table = "vw_CustomersWithRejectedTransactions"
+  }
+  else if(status === 'pending')
+  {
+    table = "vw_CustomersWithPendingTransactions"
+  }
+  else
+  {
+    table = "vw_CustomersWithApprovedTransactions"
+  }
+  conn.query(`select * from ${table}`, function (err, data, fields) {
     if(err) return next(new AppError(err))
     res.status(200).json({
       status: "success",
@@ -150,13 +264,36 @@ app.post("/UpdateProductPrice", (req, res, next) => {
   });
  });
 
+app.get("/getOrderHistory", (req, res, next) => {
+  const custId = req.body.custId;
+  const query = "SELECT * FROM vw_CustomerOrderHistory WHERE Cust_id=?";
+  conn.query(query, [custId], function (err, data, fields) {
+    if(err) return next(new AppError(err))
+    res.status(200).json({
+      status: "success",
+      length: data?.length,
+      data: data,
+    });
+  });
+});
+
+app.get("/getSellerInventory", (req, res, next) => {
+  const sellerId = req.query.sellerId;
+  const query = "SELECT * FROM vw_SellerInventoryHistory WHERE Seller_ID=?";
+  conn.query(query, [sellerId], function (err, data, fields) {
+    if(err) return next(new AppError(err))
+    res.status(200).json({
+      status: "success",
+      length: data?.length,
+      data: data,
+    });
+  });
+});
+
 app.post("/purchaseItems", async (req, res, next) => {
   let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-  console.log(req.body)
-
-  // TODO: set customerId on login
-  let customerId = 6;
+  let customerId = req.body.customerId;
   let productId = req.body.productId;
   let sellerId = req.body.sellerId;
   let count = req.body.count;
@@ -249,6 +386,20 @@ app.post("/purchaseItems", async (req, res, next) => {
           )
         }
       )
+    }
+  )
+})
+
+app.get("/getProductStock", (req, res, next) => {
+  conn.query(
+    "SELECT P.Product_ID AS productId, P.Name, P.Category, P.Description, PS.Price, PS.Stock, S.Seller_ID AS sellerId, S.Username FROM product AS P, product_stock AS PS, sellers AS S WHERE S.Seller_ID = PS.Seller_ID AND P.Product_ID = PS.Product_ID;",
+    function (err, data) {
+      if (err) throw err;
+      res.status(200).json({
+        status: "success",
+        length: data?.length,
+        data: data,
+      });
     }
   )
 })

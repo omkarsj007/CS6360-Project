@@ -11,31 +11,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { Table, Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 
-import PurchaseProduct from "./PurchaseProduct";
-
-const Admin = () => {
+const Customer = () => {
     
     const navigate = useNavigate();
-    function handleOnRejectedClick()
+    function handlePurchaseClick()
     {
-        navigate('/rejectedTransactions')
+        navigate('/purchaseProduct')
     }
 
-    function handleOnPriceClick()
-    {
-        navigate('/updateProductprice')
-    }
-
-    function handleOnOrderClick()
-    {
-        navigate('/orderHistory')
-    }
-
-    function handleOnSellerInvClick()
-    {
-        navigate('/sellerInventory')
-    }
-    
     const handleLogout = async () => {
         localStorage.removeItem("user");
         navigate('/sample')
@@ -60,34 +43,24 @@ const Admin = () => {
             <br></br>
             <Row className="justify-content-md-center">
                 <Col xs lg="6" className="text-center">
-                    <h2> Admin Actions</h2>
+                    <h2> Customer Actions</h2>
                 </Col>
             </Row>
             <Row className="justify-content-md-center mt-5">
-                <Col xs lg="6" className="d-grid gap-2">
-                <Button variant="primary" size="lg" onClick={handleOnRejectedClick}>
-                    Customer Transactions Status
-                </Button>
-                <Button variant="primary" size="lg" onClick={handleOnPriceClick}>
-                     Update Product Price
-                </Button>
-                <Button variant="primary" size="lg" onClick={handleOnOrderClick}>
-                     Order History
-                </Button>
-                <Button variant="primary" size="lg" onClick={handleOnSellerInvClick}>
-                     Seller Inventory
+                <Col xs lg="6" className="d-grid gap-2" >
+                <Button variant="primary" size="lg" onClick={handlePurchaseClick}>
+                    Purchase Product
                 </Button>
                 <Button variant="primary" size="lg" onClick={handleLogout}>
-                     Logout
+                    Log out
                 </Button>
                 </Col>
             </Row>
 
-            
         </Container>
         
       );
   };
   
-  export default Admin;
+  export default Customer;
   
