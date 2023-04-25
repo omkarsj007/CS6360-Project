@@ -18,7 +18,7 @@ function OrderHistory() {
         }
 
         fetch("http://localhost:8080/getOrderHistory", {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
