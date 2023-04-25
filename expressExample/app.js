@@ -50,53 +50,81 @@ app.get("/validateLogin/:email", (req, res, next) => {
  });
 
 app.post("/addNewUser", (req, res, next) => {
-  let id = 7;
-  let username = req.body.username;
-  let name = username.substring(0, username.indexOf('@'));
-  let phone_no = Math.floor(100000000 + Math.random() * 900000000);
-  let password = req.body.password;
   let userType = req.body.userType;
-  if (admin_seller == "Seller")
+  let username = req.body.username;
+  let password = req.body.password;
+
+  if (userType == 'customer' || userType == 'Customer')
   {
-    conn.query("INSERT INTO Users(ID, Name, Email, Phone_No) VALUES (username, username, username, username)"
-[Product_Price,productId, sellerId],
-              function (err, data, fields) {
-      if(err) return next(new AppError(err))
+    let id = 4;
+    let bankID = 3;
+    let acct_num = Math.floor(100000000 + Math.random() * 700000000);    
+         
+    conn.query(
+    "INSERT INTO Customer (Cust_id, Username, Password, Bank_ID, Bank_AccNum) VALUES (?, ?, ?, ?, ?)",
+    [id, username, password, bankID, acct_num],
+    function(err, data) {
+      if (err) throw err;
+      if (data.length === 0) {
+        console.log("Sending 400")
+        return res.status(400).send("Error creating account, try again");
+      };
       res.status(200).json({
         status: "success",
         length: data?.length,
         data: data,
       });
-    });
+    }); 
   }
-  else if (admin_seller == "Admin")
+   else if (userType == "admin" || userType == "Admin")
+    {
+      let id = 7;
+      let username = req.body.username;
+      let password = req.body.password;
+      let division = second;
+
+      conn.query(
+        "INSERT INTO Admin (Admin_id, Username, Password, Division) VALUES (?, ?, ?, ?)",
+        [id, username, password, division],
+        function(err, data) {
+          if (err) throw err;
+          if (data.length === 0) {
+            console.log("Sending 400")
+            return res.status(400).send("Error creating account, try again");
+          };
+          res.status(200).json({
+            status: "success",
+            length: data?.length,
+            data: data,
+          });
+        }); 
+  }
+  else if (userType == "seller" || userType == "Seller")
   {
-    conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? ",
-              [Product_Price,productId],
-              function (err, data, fields) {
-      if(err) return next(new AppError(err))
-      res.status(200).json({
-        status: "success",
-        length: data?.length,
-        data: data,
-      });
-    });
+    let id = 7;
+    let username = req.body.username;
+    let password = req.body.password;
+    let address = "3000 Northside Blvd";
+    conn.query(
+      "INSERT INTO Sellers (Seller_ID, Username, Password, Address) VALUES (?, ?, ?, ?)",
+      [id, username, password, address],
+      function(err, data) {
+        if (err) throw err;
+        if (data.length === 0) {
+          console.log("Sending 400")
+          return res.status(400).send("Error creating account, try again");
+        };
+        res.status(200).json({
+          status: "success",
+          length: data?.length,
+          data: data,
+        });
+      }); 
   }
   else 
   {
-     return res.status(400).send("Please Specify whether you are Admin or Seller");
+     return res.status(400).send("Please Specify whether you are Admin, Seller, or Customer");
   }
- });
-
-app.get("/getAllTodos", (req, res, next) => {
-  conn.query("SELECT * FROM customer", function (err, data, fields) {
-    if(err) return next(new AppError(err))
-    res.status(200).json({
-      status: "success",
-      length: data?.length,
-      data: data,
-    });
-  });
 });
 
 

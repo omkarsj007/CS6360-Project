@@ -20,30 +20,38 @@ function Signup() {
   }
 
   const handleExecuteClick = async () => {
-    const email_ = data.username;
+    const username_ = data.username;
     const password_ = data.password;
     const userType_ = data.userType;
     let params = {
-        email: email_,
+        username: username_,
         password: password_,
         userType: userType_
     }
-    fetch("http://localhost:8080/addNewUser", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(params)
-    })
-    .then((res) => res.text())
-    .then(data => {
-        console.log(data);
-        // setOutput(data);
-    })
-    .catch(err => {
-        console.error(err);
-        // setOutput("Error: " + err.message);
-    })
+
+    try {
+        console.log("here")
+        console.log("usertype: ", userType_)
+
+        const response = await fetch("http://localhost:8080/addNewUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(params)
+        })
+        
+        const data = await response.json();
+        setResult(JSON.stringify(data));
+        if(response.ok){
+            window.location.href = '/sample';
+        }
+        else{
+          console.log("Invalid account creation")
+        }
+      } catch (error) {
+        console.error(error);
+      }
   };
 
   return (
@@ -62,7 +70,12 @@ function Signup() {
         <br></br><br></br>
         <label>
           User Type 
-          <input type="text" id="userType" value={data.userType} onChange={handleChange} />
+          <select id="userType" value={data.userType} onChange={handleChange}>
+            <option value="">Select a user type</option>
+            <option value="customer">Customer</option>
+            <option value="admin">Admin</option>
+            <option value="seller">Seller</option>
+          </select>
         </label>
         <br></br>
         <br></br>
