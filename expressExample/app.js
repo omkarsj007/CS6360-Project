@@ -49,6 +49,45 @@ app.get("/validateLogin/:email", (req, res, next) => {
   });
  });
 
+app.post("/addNewUser", (req, res, next) => {
+  let id = 7;
+  let username = req.body.username;
+  let name = username.substring(0, username.indexOf('@'));
+  let phone_no = Math.floor(100000000 + Math.random() * 900000000);
+  let password = req.body.password;
+  let userType = req.body.userType;
+  if (admin_seller == "Seller")
+  {
+    conn.query("INSERT INTO Users(ID, Name, Email, Phone_No) VALUES (username, username, username, username)"
+[Product_Price,productId, sellerId],
+              function (err, data, fields) {
+      if(err) return next(new AppError(err))
+      res.status(200).json({
+        status: "success",
+        length: data?.length,
+        data: data,
+      });
+    });
+  }
+  else if (admin_seller == "Admin")
+  {
+    conn.query("Update `Product_Stock` set `price` = ? WHERE `Product_ID` = ? ",
+              [Product_Price,productId],
+              function (err, data, fields) {
+      if(err) return next(new AppError(err))
+      res.status(200).json({
+        status: "success",
+        length: data?.length,
+        data: data,
+      });
+    });
+  }
+  else 
+  {
+     return res.status(400).send("Please Specify whether you are Admin or Seller");
+  }
+ });
+
 app.get("/getAllTodos", (req, res, next) => {
   conn.query("SELECT * FROM customer", function (err, data, fields) {
     if(err) return next(new AppError(err))

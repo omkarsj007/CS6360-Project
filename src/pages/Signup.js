@@ -7,10 +7,9 @@ import Row from "react-bootstrap/Row";
 import UserCard from "../components/UserCard";
 import "../index.css"
 
-function Login() {
+function Signup() {
   const [data, setData] = useState({username: "", password: "", userType: ""});
   const [result, setResult] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const {id , value} = e.target   
@@ -21,30 +20,35 @@ function Login() {
   }
 
   const handleExecuteClick = async () => {
-    const email = data.username;
-    const password = data.password;
-    const userType = data.userType;
-    try {
-      console.log("here")
-      console.log("USERNAME: ", email)
-      const response = await fetch(`http://localhost:8080/validateLogin/${encodeURIComponent(email)}`);
-      const data = await response.json();
-      setResult(JSON.stringify(data));
-      if(response.ok){
-        
-        window.location.href = '/';
-      }
-      else{
-        setErrorMessage("Invalid login")
-      }
-    } catch (error) {
-      console.error(error);
+    const email_ = data.username;
+    const password_ = data.password;
+    const userType_ = data.userType;
+    let params = {
+        email: email_,
+        password: password_,
+        userType: userType_
     }
+    fetch("http://localhost:8080/addNewUser", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(params)
+    })
+    .then((res) => res.text())
+    .then(data => {
+        console.log(data);
+        // setOutput(data);
+    })
+    .catch(err => {
+        console.error(err);
+        // setOutput("Error: " + err.message);
+    })
   };
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <h1> Login </h1>
+      <h1> Create Account </h1>
       <form>
         <label>
           Username 
@@ -61,15 +65,13 @@ function Login() {
           <input type="text" id="userType" value={data.userType} onChange={handleChange} />
         </label>
         <br></br>
-        <a href="/signup">Create Account</a>
         <br></br>
         <button type="button" onClick={handleExecuteClick}>
-          Login
+          Create Account
         </button>
-        {errorMessage && <div className="error"> {errorMessage} </div>}
       </form>
     </div>
   );
 }
 
-export default Login;
+export default Signup;
