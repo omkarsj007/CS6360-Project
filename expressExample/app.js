@@ -98,7 +98,7 @@ app.post("/sample", async (req, res, next) => {
   }
   if(userType == "seller")
   {
-    conn.query(`select * from Seller where username="${username}" AND password="${password}"`, function (err, results) {
+    conn.query(`select * from Sellers where username="${username}" AND password="${password}"`, function (err, results) {
       if (err) throw err;
       if (results.length === 1) {
         return res.status(200).json({
@@ -229,6 +229,19 @@ app.get("/getOrderHistory", (req, res, next) => {
   const custId = req.body.custId;
   const query = "SELECT * FROM vw_CustomerOrderHistory WHERE Cust_id=?";
   conn.query(query, [custId], function (err, data, fields) {
+    if(err) return next(new AppError(err))
+    res.status(200).json({
+      status: "success",
+      length: data?.length,
+      data: data,
+    });
+  });
+});
+
+app.get("/getSellerInventory", (req, res, next) => {
+  const sellerId = req.query.sellerId;
+  const query = "SELECT * FROM vw_SellerInventoryHistory WHERE Seller_ID=?";
+  conn.query(query, [sellerId], function (err, data, fields) {
     if(err) return next(new AppError(err))
     res.status(200).json({
       status: "success",

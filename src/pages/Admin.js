@@ -25,6 +25,16 @@ const Admin = () => {
     {
         navigate('/updateProductprice')
     }
+
+    function handleOnOrderClick()
+    {
+        navigate('/orderHistory')
+    }
+
+    function handleOnSellerInvClick()
+    {
+        navigate('/sellerInventory')
+    }
     
     const handleLogout = async () => {
         localStorage.removeItem("user");
@@ -60,6 +70,12 @@ const Admin = () => {
                 </Button>
                 <Button variant="primary" size="lg" onClick={handleOnPriceClick}>
                      Update Product Price
+                </Button>
+                <Button variant="primary" size="lg" onClick={handleOnOrderClick}>
+                     Order History
+                </Button>
+                <Button variant="primary" size="lg" onClick={handleOnSellerInvClick}>
+                     Seller Inventory
                 </Button>
                 <Button variant="primary" size="lg" onClick={handleLogout}>
                      Logout

@@ -13,6 +13,7 @@ import PurchaseProduct from './pages/PurchaseProduct';
 import Customer from './pages/Customer';
 import Sample from './pages/Sample';
 import OrderHistory from './pages/OrderHistory';
+import SellerInventory from './pages/SellerInventory';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/purchaseProduct" element={<PurchaseProduct />} />
         <Route path="/sample" element={<Sample />} />
         <Route path="/orderHistory" element={<OrderHistory />} />
+        <Route path="/sellerInventory" element={<SellerInventory />} />
       </Routes>
     </Router>
   );
