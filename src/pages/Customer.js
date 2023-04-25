@@ -11,8 +11,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { Table, Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 
-import PurchaseProduct from "./PurchaseProduct";
-
 const Customer = () => {
     
     const navigate = useNavigate();

@@ -254,10 +254,7 @@ app.get("/getSellerInventory", (req, res, next) => {
 app.post("/purchaseItems", async (req, res, next) => {
   let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-  console.log(req.body)
-
-  // TODO: set customerId on login
-  let customerId = 6;
+  let customerId = req.body.customerId;
   let productId = req.body.productId;
   let sellerId = req.body.sellerId;
   let count = req.body.count;
@@ -350,6 +347,20 @@ app.post("/purchaseItems", async (req, res, next) => {
           )
         }
       )
+    }
+  )
+})
+
+app.get("/getProductStock", (req, res, next) => {
+  conn.query(
+    "SELECT P.Product_ID AS productId, P.Name, P.Category, P.Description, PS.Price, PS.Stock, S.Seller_ID AS sellerId, S.Username FROM product AS P, product_stock AS PS, sellers AS S WHERE S.Seller_ID = PS.Seller_ID AND P.Product_ID = PS.Product_ID;",
+    function (err, data) {
+      if (err) throw err;
+      res.status(200).json({
+        status: "success",
+        length: data?.length,
+        data: data,
+      });
     }
   )
 })

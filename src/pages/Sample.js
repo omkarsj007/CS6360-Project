@@ -53,6 +53,7 @@ function Sample() {
         if(userType == "customer")
         {
             window.location.href = '/customer';
+            localStorage.setItem("cust_id", data["data"][0]["Cust_id"]);
         }
         else
         {
