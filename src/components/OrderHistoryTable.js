@@ -11,7 +11,6 @@ const OrderHistoryTable = (props) => {
   }
 
   let orders = json.data
-  console.log(orders)
 
   return (
     <>

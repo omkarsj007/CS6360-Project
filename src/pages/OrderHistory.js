@@ -11,7 +11,7 @@ import OrderHistoryTable from "../components/OrderHistoryTable";
 
 function OrderHistory() {
     const [custId, setCustId] = useState([]);
-    const [output, setOutput] = useState([]);
+    const [output, setOutput] = useState();
 
     const handleGetOrderHistory = (event) => {
         event.preventDefault();
@@ -49,7 +49,7 @@ function OrderHistory() {
                     <label htmlFor="custId">Customer ID: </label>
                     <input type="text" id="custId" value={custId} onChange={e => setCustId(e.target.value)} required/>
                 </form>
-                <OrderHistoryTable orderHistoryRes={output}/>
+                {output && <OrderHistoryTable orderHistoryRes={output}/>}
             </Col>
         </Row>
     );
