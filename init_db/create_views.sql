@@ -77,3 +77,35 @@ FROM vw_CustomerOrderHistory
 GROUP BY Cust_id, Username
 ORDER BY Total_Money_Spent DESC
 LIMIT 5;
+
+-- Returns how much each customer has spent
+CREATE VIEW CustomerSpent AS
+SELECT C.Cust_id, C.Username, SUM(OS.Count * PS.Price) AS Spent  
+FROM Customer AS C, Product AS P, Orders AS O, Order_Summary AS OS, Product_Stock AS PS 
+WHERE C.Cust_id = O.Cust_ID     
+    AND P.Product_ID = OS.Product_ID     
+    AND O.Order_ID = OS.Order_ID     
+    AND PS.Product_ID = P.Product_ID 
+GROUP BY Cust_id, C.Username;
+
+-- Get a list of customers who spend more than average
+CREATE VIEW HighSpenders AS
+SELECT C.Cust_id, C.Username, SUM(OS.Count * PS.Price) AS Spent
+FROM Customer AS C, Product AS P, Orders AS O, Order_Summary AS OS, Product_Stock AS PS 
+WHERE C.Cust_id = O.Cust_ID     
+    AND P.Product_ID = OS.Product_ID     
+    AND O.Order_ID = OS.Order_ID     
+    AND PS.Product_ID = P.Product_ID 
+GROUP BY C.Cust_id, C.Username
+HAVING SUM(OS.Count * PS.Price) > (
+    SELECT SUM(Spent) / COUNT(*)
+    FROM (
+        SELECT C.Cust_id, C.Username, SUM(OS.Count * PS.Price) AS Spent
+        FROM Customer AS C, Product AS P, Orders AS O, Order_Summary AS OS, Product_Stock AS PS 
+        WHERE C.Cust_id = O.Cust_ID     
+            AND P.Product_ID = OS.Product_ID     
+            AND O.Order_ID = OS.Order_ID     
+            AND PS.Product_ID = P.Product_ID 
+        GROUP BY C.Cust_id, C.Username
+    ) AS CustomersSpent
+);
