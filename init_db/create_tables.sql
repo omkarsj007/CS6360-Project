@@ -5,7 +5,7 @@ CREATE DATABASE ecommerce;
 USE ecommerce;
 
 CREATE TABLE Users (
-    ID CHAR(10) NOT NULL,
+    ID INT NOT NULL AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
     Email VARCHAR(320) NOT NULL,
     Phone_No VARCHAR(20) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Addresses (
-    ID CHAR(10) NOT NULL,
+    ID INT NOT NULL AUTO_INCREMENT,
     Address1 VARCHAR(255) NOT NULL,
     Address2 VARCHAR(255),
     Address3 VARCHAR(255),
@@ -22,7 +22,7 @@ CREATE TABLE Addresses (
 );
 
 CREATE TABLE Admin (
-    Admin_id CHAR(10) NOT NULL,
+    Admin_id INT NOT NULL AUTO_INCREMENT,
     Username VARCHAR(100) NOT NULL,
     Password VARCHAR(255) NOT NULL,
     Division VARCHAR(100) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE Admin (
 );
 
 CREATE TABLE Sellers (
-    Seller_ID CHAR(10) NOT NULL,
+    Seller_ID INT NOT NULL AUTO_INCREMENT,
     Username VARCHAR(100) NOT NULL,
     Password VARCHAR(255) NOT NULL,
     Address VARCHAR(255) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE Bank (
 );
 
 CREATE TABLE Customer(
-    Cust_id char(10) NOT NULL,
+    Cust_id INT NOT NULL AUTO_INCREMENT,
     Username VARCHAR(100) NOT NULL,
     Password VARCHAR(255) NOT NULL,
     Bank_ID INT NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE Transactions (
 );
 
 CREATE TABLE Product (
-    Product_ID INT NOT NULL,
+    Product_ID INT NOT NULL AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
     Category VARCHAR(100) NOT NULL,
     Description VARCHAR(1000),
@@ -81,7 +81,7 @@ CREATE TABLE Product (
 
 CREATE TABLE Product_Stock (
     Product_ID INT NOT NULL,
-    Seller_ID CHAR(10) NOT NULL,
+    Seller_ID INT NOT NULL,
     Price INT NOT NULL,
     Stock INT NOT NULL,
     PRIMARY KEY(Product_ID),
@@ -91,7 +91,7 @@ CREATE TABLE Product_Stock (
 
 CREATE TABLE Orders (
     Order_ID INT NOT NULL AUTO_INCREMENT,
-    Cust_ID CHAR(10) NOT NULL,
+    Cust_ID INT NOT NULL,
     Timestamp TIMESTAMP NOT NULL,
     Status ENUM(
         'Processing',
@@ -100,7 +100,7 @@ CREATE TABLE Orders (
         'Completed',
         'Cancelled'
     ) NOT NULL,
-    Verified_By CHAR(10) NOT NULL,
+    Verified_By INT NOT NULL,
     T_ID INT NOT NULL,
     PRIMARY KEY(Order_ID),
     CONSTRAINT FKORCU FOREIGN KEY (Cust_ID) REFERENCES Customer(Cust_ID) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -110,7 +110,7 @@ CREATE TABLE Orders (
 CREATE TABLE Order_Summary (
     Order_ID INT NOT NULL,
     Product_ID INT NOT NULL,
-    Seller_ID CHAR(10) NOT NULL,
+    Seller_ID INT NOT NULL,
     Count INT NOT NULL,
     PRIMARY KEY(Order_ID),
     CONSTRAINT FKOSOR FOREIGN KEY (Order_id) REFERENCES Orders(Order_ID) ON UPDATE CASCADE ON DELETE CASCADE,
