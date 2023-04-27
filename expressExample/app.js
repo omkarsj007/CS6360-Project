@@ -170,8 +170,8 @@ app.post("/sample", async (req, res, next) => {
       if (results.length === 1) {
         return res.status(200).json({
           status: "success",
-          length: data?.length,
-          data: data,
+          length: results?.length,
+          data: results,
         });
       } else {
         return res.status(404).json({ error: "Invalid Credentials" });
