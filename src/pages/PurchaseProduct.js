@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../index.css"
 
-import CurrentStock from "./CurrentStock";
+import CurrentStock from "../components/CurrentStock";
 
 function PurchaseProduct() {
     const [productId, setProductId] = useState([]);
