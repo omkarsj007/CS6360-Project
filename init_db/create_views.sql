@@ -1,17 +1,8 @@
 -- Get items sold by each seller
-CREATE VIEW vw_tin_syProducts AS
-SELECT P.Product_ID, Name, Category, Description
-FROM Product as P, Sellers as S, Product_Stock as PS
-WHERE P.Product_ID = PS.Product_ID
-    AND S.Seller_ID = PS.Seller_ID
-    AND S.Username = 'tin_sy';
-
-CREATE VIEW vw_Sana_bella123Products AS
-SELECT P.Product_ID, Name, Category, Description
-FROM Product as P, Sellers as S, Product_Stock as PS
-WHERE P.Product_ID = PS.Product_ID
-    AND S.Seller_ID = PS.Seller_ID
-    AND S.Username = 'Sana_bella123';
+CREATE VIEW vw_SellerInventoryHistory AS
+SELECT PS.Product_ID, PS.Seller_ID,PS.Price,P.Name, P.Category, P.Description, PS.Stock
+FROM Product AS P, Product_Stock AS PS
+WHERE P.Product_ID = PS.Product_ID;
 
 -- Get a list of customers who had rejected transactions
 CREATE VIEW vw_CustomersWithRejectedTransactions AS
@@ -20,6 +11,26 @@ FROM Customer as C, Transactions as T
 WHERE T.Bank_ID = C.Bank_ID
     AND T.Account_id = C.Bank_AccNum
     AND T.Approval_Status = 'Rejected'
+GROUP BY C.Cust_id;
+
+-- Get a list of customers who had approved transactions
+CREATE VIEW vw_CustomersWithApprovedTransactions AS
+SELECT C.Cust_id, U.Name, U.Email, U.Phone_no, COUNT(*) AS Count
+FROM Customer as C, Transactions as T, Users as U
+WHERE T.Bank_ID = C.Bank_ID
+    AND T.Account_id = C.Bank_AccNum
+    AND T.Approval_Status = 'Approved'
+    AND U.ID = C.Cust_id
+GROUP BY C.Cust_id;
+
+-- Get a list of customers who had pending transactions
+CREATE VIEW vw_CustomersWithPendingTransactions AS
+SELECT C.Cust_id, U.Name, U.Email, U.Phone_no, COUNT(*) AS Count
+FROM Customer as C, Transactions as T, Users as U
+WHERE T.Bank_ID = C.Bank_ID
+    AND T.Account_id = C.Bank_AccNum
+    AND T.Approval_Status = 'Pending'
+    AND U.ID = C.Cust_id
 GROUP BY C.Cust_id;
 
 -- Get a list of products that are out of stock
