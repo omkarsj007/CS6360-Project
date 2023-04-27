@@ -283,7 +283,7 @@ app.post("/UpdateProductPrice", (req, res, next) => {
     table = "vw_CustomersWithApprovedTransactions"
   }
   conn.query(`select * from ${table}`, function (err, data, fields) {
-    if(err) return next(new AppError(err))
+    if(err) throw err;
     res.status(200).json({
       status: "success",
       length: data?.length,
@@ -296,7 +296,7 @@ app.post("/getOrderHistory", (req, res, next) => {
   const custId = req.body.custId;
   const query = "SELECT * FROM vw_CustomerOrderHistory WHERE Cust_id=?";
   conn.query(query, [custId], function (err, data, fields) {
-    if(err) return next(new AppError(err))
+    if(err) throw err;
     res.status(200).json({
       status: "success",
       length: data?.length,
@@ -309,7 +309,7 @@ app.get("/getSellerInventory", (req, res, next) => {
   const sellerId = req.query.sellerId;
   const query = "SELECT * FROM vw_SellerInventoryHistory WHERE Seller_ID=?";
   conn.query(query, [sellerId], function (err, data, fields) {
-    if(err) return next(new AppError(err))
+    if(err) throw err
     res.status(200).json({
       status: "success",
       length: data?.length,
