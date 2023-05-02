@@ -9,6 +9,8 @@ source init_db/populate_tables.sql
 source init_db/create_views.sql
 ```
 
+Update the MySQL config in `expressExample/config/db.config.js`
+
 ### Start React front-end
 ```
 npm install
